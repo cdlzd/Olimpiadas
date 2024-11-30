@@ -5,7 +5,7 @@ session_start(); // Iniciar sesión para guardar los datos del usuario
 $servername = "sql107.infinityfree.com"; // Cambiar si es necesario
 $username = "if0_37819215"; // Cambiar por tu usuario
 $password = "F7xg1rN0xR"; // Cambiar por tu contraseña
-$dbname = "F7xg1rN0xR"; // Nombre de la base de datos
+$dbname = "if0_37819215_XXX"; // Nombre de la base de datos
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
