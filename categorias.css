@@ -1,0 +1,16 @@
+
+.select_cat{
+    position: absolute;
+    left: 170px;
+    top: 120px;
+}
+.btn-danger{
+    position: absolute;
+    display: flex;
+    top:400px;
+    text-align: center;
+    right: 20px;
+    border-radius: 20px;
+    width: 120px;
+    height: 30px;
+}

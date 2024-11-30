@@ -47,23 +47,54 @@ $conexion->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equipos - Olimpiadas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #ffc107; /* Amarillo */
+        }
+        .navbar .btn-dark {
+            margin-right: 10px;
+        }
+        .user-info {
+            font-size: 18px;
+            margin-right: auto;
+        }
+        .btn-custom {
+            background-color: #eb9501;
+            color: white;
+            font-size: 18px;
+            border-radius: 20px;
+        }
+        .btn-custom:hover {
+            background-color: #d67a00;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-img-top {
+            max-height: 200px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-end mt-3">
-                <span>Bienvenido, <?php echo htmlspecialchars($usuario['nombre_usuario']); ?>!</span>
-                <a href="logout.php" class="btn btn-danger">Cerrar sesión</a>
-            </div>
+    <nav class="navbar d-flex justify-content-between px-3">
+        <div class="user-info">
+            <strong><?php echo htmlspecialchars($usuario['nombre_usuario']); ?></strong>
         </div>
-        
-        <h2 class="mt-5">Equipos de la Categoría</h2>
+        <div>
+            <a href="categorias.php" class="btn btn-custom">Categorías</a>
+            <a href="login.html" class="btn btn-custom">Cerrar sesión</a>
+            <img src="imagenes/logout.jpg" alt="Cerrar sesión" style="width: 30px; margin-left: 10px;">
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Equipos de la categoría</h2>
         <div class="row">
             <?php
             if ($resultado_equipos->num_rows > 0) {
-                while($equipo = $resultado_equipos->fetch_assoc()) {
-                    // Mostrar los equipos
-                    echo '<div class="col-4 mb-3">';
+                while ($equipo = $resultado_equipos->fetch_assoc()) {
+                    echo '<div class="col-md-4 mb-3">';
                     echo '<div class="card">';
                     echo '<img src="' . htmlspecialchars($equipo['imagen']) . '" class="card-img-top" alt="' . htmlspecialchars($equipo['nombre_equipo']) . '">';
                     echo '<div class="card-body">';
@@ -72,17 +103,13 @@ $conexion->close();
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
-                    echo 'Categoría seleccionada: ' . $_SESSION['categoria_id'];
-
                 }
             } else {
-                echo "No hay equipos disponibles para esta categoría.";
+                echo '<p>No hay equipos disponibles para esta categoría.</p>';
             }
             ?>
         </div>
     </div>
-    <button><a href="categorias.php"> Categorias </a></button>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

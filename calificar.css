@@ -1,0 +1,22 @@
+.titulo{
+    color: white;
+    height: 30%;
+    text-align: center;
+    border-radius: 20px;
+    border: 10px solid rgba(246, 133, 27, 0.351);
+    background-color: rgb(246, 133, 27);
+}
+.contenedor{
+    border-radius: 20px;
+    background-color: rgba(230, 164, 33, 0.564);
+    border: 20px solid  rgba(230, 162, 37, 0.09);
+    margin-top: 40px;
+    width: 80%;
+}
+.title{
+    font-size: 25px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.form-control{
+    background-color: rgb(251, 227, 195);
+}

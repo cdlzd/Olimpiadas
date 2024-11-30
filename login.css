@@ -1,0 +1,131 @@
+.iniciar_sesion{
+    position: absolute;
+    top: 100px;
+    left: 400px;
+    width: 350px;
+    height: 300px;
+    background-color: rgba(255, 140, 0, 0.892);
+    border-radius: 40px;
+}
+.iniciar{
+    position: absolute;
+    top: 20px;
+    left: 70px;
+    color: aliceblue;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.us{
+    position: absolute;
+    top: 70px;
+    left: 30px;
+
+}
+.usinp{
+    position: absolute;
+    top: 100px;
+    left: 30px;
+    border-radius: 30px;
+}
+.cr{
+    position: absolute;
+    top: 140px;
+    left: 30px;
+}
+.crinp{
+    position: absolute;
+    top: 170px;
+    left: 30px;
+    border-radius: 30px;
+}
+.botonini{
+    position: absolute;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    top: 225px;
+    left: 85px;
+    width: 200px;
+    height: auto;
+    border-radius: 20px;
+
+}
+button:hover {
+    background-color: #0056b3;
+}
+.carru{
+    background-color: antiquewhite;
+    position: absolute;
+    display: flex;
+    width: 300px;
+    height: 300px;
+    margin-top: 100px;
+    left: 40px;
+}
+.carrusel {
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 600px;
+    overflow: hidden;
+    margin: auto;
+}
+
+.carrusel-contenido {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    min-width: 100%; /* Mostrar solo un icono a la vez */
+    box-sizing: border-box;
+    text-align: center;
+    
+}
+
+.slide img {
+    margin-left: -75px;
+    width: 200px; /* Ajusta el tamaño del icono aquí */
+    height: 200px; /* Ajusta el tamaño del icono aquí */
+    
+}
+
+button {
+    background-color: #eb9501;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+button:hover {
+    background-color: #b34b00;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.prev {
+    left: 5px;
+}
+
+.next {
+    right: 10px;
+}
+.barra1{
+    margin-top: -20px;
+    width: 780px;
+    height: 110px;
+}
+  
+.barra2{
+    position: absolute;
+    margin-top: 315px;
+    width: 780px;
+    height: 80px;
+}

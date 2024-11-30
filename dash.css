@@ -1,0 +1,12 @@
+body{
+    background-color: rgb(252, 242, 230);
+}
+.btn-danger{
+    position: absolute;
+    text-align: center;
+    margin-left: 10px;
+    border-radius: 20px;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+}

@@ -31,29 +31,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario = $result->fetch_assoc();
         
         // Verificar la contraseña
-        if ($contrasena == $usuario['contrasena']) { // Verificación sin hash (solo por ahora, en producción es mejor encriptar)
+        if ($contrasena == $usuario['contrasena']) { // Comparación sin hash (mejor usar hash en producción)
             // Crear la sesión del usuario
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['nombre_usuario'] = $usuario['nombre_usuario'];
-            $_SESSION['rol'] = $usuario['rol']; // Almacenamos el rol para diferenciar entre admin y usuario
+            $_SESSION['rol'] = $usuario['rol']; // Almacenar el rol
 
             // Redirigir según el rol del usuario
             if ($usuario['rol'] == 'admin') {
-                // Si es administrador, redirigir al dashboard de administración
-                header("Location: dashboard.php");  // Cambia esto a la página que desees
-            } else {
-                // Si es usuario regular, redirigir a categorías
+                header("Location: dashboard.php");
+            } elseif ($usuario['rol'] == 'usuario') {
                 header("Location: categorias.php");
+            } elseif ($usuario['rol'] == 'pollitos') {
+                header("Location: eq_pioconetl.php");
+            } else {
+                // Rol no reconocido
+                header("Location: login.html?error=2"); // Error específico para rol desconocido
             }
             exit();
         } else {
-            // Si la contraseña es incorrecta
-            header("Location: login.html?error=1");
+            // Contraseña incorrecta
+            header("Location: login.html?error=1"); // Error de credenciales
             exit();
         }
     } else {
-        // Si el usuario no existe
-        header("Location: login.html?error=1");
+        // Usuario no encontrado
+        header("Location: login.html?error=1"); // Error de credenciales
         exit();
     }
 }

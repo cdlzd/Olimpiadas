@@ -53,52 +53,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               VALUES (?, ?, ?, ?, ?)";
 
     // Usar consultas preparadas para evitar inyecciones SQL
-    if ($stmt = $conn->prepare($query)) {
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
         // Vincular los parámetros
         $stmt->bind_param("iiids", $usuario_id, $equipo_id, $categoria_id, $calificacion_total, $retroalimentacion);
 
-        // Ejecutar la consulta
+        // Ejecutar la consulta y verificar el resultado
+        ?>
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Resultados</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                .navbar {
+                    background-color: #ffc107; /* Amarillo */
+                }
+                .navbar .btn-dark {
+                    margin-right: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <nav class="navbar navbar-light">
+                <a class="btn btn-dark" href="calificaciones_f.php">Ver mis calificaciones</a>
+                <a class="btn btn-dark" href="categorias.php">Elegir otra categoría</a>
+                <a class="btn btn-dark" href="equipos.php?categoria_id=<?php echo htmlspecialchars($categoria_id); ?>">Elegir otro equipo</a>
+                <a class="btn btn-dark" href="login.html">Cerrar sesión</a>
+            </nav>
+            <div class="container mt-5">
+        <?php
         if ($stmt->execute()) {
-            echo "Calificación guardada correctamente.";
+            echo "<h1>¡Gracias por calificar!</h1>";
+            echo "<p>La calificación para el equipo ha sido guardada correctamente.</p>";
         } else {
-            echo "Error al guardar la calificación: " . $stmt->error;
+            echo "<h1>¡Ya ha calificado este equipo!</h1>";
         }
-
-        // Cerrar la declaración
+        ?>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+        </html>
+        <?php
         $stmt->close();
     } else {
-        echo "Error en la preparación de la consulta: " . $conn->error;
+        echo "<h1>Error en la consulta preparada</h1>";
+        echo "<p>Detalles: " . $conn->error . "</p>";
     }
 
-    // Cerrar la conexión
     $conn->close();
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calificación Guardada</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <h1>¡Gracias por calificar!</h1>
-        <p>La calificación para el equipo ha sido guardada correctamente.</p>
-
-        <!-- Botón para ir a la página de calificaciones -->
-        <a href="calificaciones.php" class="btn btn-primary">Ver mis calificaciones</a>
-
-        <!-- Botón para volver a calificar otro equipo -->
-        <a href="calificar.php?equipo_id=<?php echo $equipo_id; ?>" class="btn btn-secondary">Calificar otro equipo</a>
-        
-        <!-- Botón para elegir otra categoría -->
-        <a href="equipos.php?categoria_id=<?php echo $categoria_id; ?>" class="btn btn-secondary">Elegir otra categoría</a>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-

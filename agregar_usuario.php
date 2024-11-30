@@ -17,21 +17,21 @@ if (!$conn) {
 // Procesar el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre_usuario = $_POST['nombre_usuario'];
-    $correo_usuario = $_POST['correo_usuario'];
-    $contrasena_usuario = password_hash($_POST['contrasena_usuario'], PASSWORD_DEFAULT);
+    $contrasena = $_POST['contrasena_usuario']; // Contraseña sin encriptar
     $rol = $_POST['rol'];
 
     // Verificar si los datos están completos
-    if (empty($nombre_usuario) || empty($correo_usuario) || empty($contrasena_usuario) || empty($rol)) {
+    if (empty($nombre_usuario) || empty($contrasena) || empty($rol)) {
         die('Faltan datos.');
     }
 
     // Insertar el nuevo usuario en la base de datos
-    $query = "INSERT INTO usuarios (nombre_usuario, correo_usuario, contrasena_usuario, rol) 
-              VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO usuarios (nombre_usuario, contrasena, rol) 
+              VALUES (?, ?, ?)";
 
     if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param("ssss", $nombre_usuario, $correo_usuario, $contrasena_usuario, $rol);
+        // Cambiar la cadena de tipos a "sss" porque hay tres parámetros
+        $stmt->bind_param("sss", $nombre_usuario, $contrasena, $rol);
 
         if ($stmt->execute()) {
             echo "Usuario agregado correctamente.";
@@ -40,6 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $stmt->close();
+    } else {
+        echo "Error al preparar la consulta: " . $conn->error;
     }
 
     $conn->close();
@@ -65,11 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="form-group">
-                <label for="correo_usuario">Correo de Usuario</label>
-                <input type="email" name="correo_usuario" id="correo_usuario" class="form-control" required>
-            </div>
-
-            <div class="form-group">
                 <label for="contrasena_usuario">Contraseña</label>
                 <input type="password" name="contrasena_usuario" id="contrasena_usuario" class="form-control" required>
             </div>
@@ -79,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="rol" id="rol" class="form-control" required>
                     <option value="usuario">Usuario</option>
                     <option value="admin">Administrador</option>
+                    <option value="pollitos">Pioconetl</option>
                 </select>
             </div>
 

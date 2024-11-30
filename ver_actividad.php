@@ -3,7 +3,7 @@ session_start();
 
 // Verificar si el usuario es administrador
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] != 'admin') {
-    header('Location: login.php');  // Redirigir si no es administrador
+    header('Location: login.php'); // Redirigir si no es administrador
     exit();
 }
 
@@ -21,36 +21,83 @@ if ($conn->connect_error) {
 }
 
 // Consultar las calificaciones de los usuarios
-$sql = "SELECT calificaciones.*, usuarios.nombre_usuario, equipos.nombre_equipo, categoria.nombre_categoria 
-        FROM calificaciones
-        JOIN usuarios ON calificaciones.usuario_id = usuarios.id
-        JOIN equipos ON calificaciones.equipo_id = equipos.id
-        JOIN categoria ON calificaciones.categoria_id = Categoria.id";
-        // ORDER BY calificaciones.fecha DESC";
-
-
-// Ejecutar la consulta y verificar si se ejecutó correctamente
+$sql = "
+    SELECT calificaciones.*, usuarios.nombre_usuario, equipos.nombre_equipo, categoria.nombre_categoria 
+    FROM calificaciones
+    JOIN usuarios ON calificaciones.usuario_id = usuarios.id
+    JOIN equipos ON calificaciones.equipo_id = equipos.id
+    JOIN categoria ON calificaciones.categoria_id = categoria.id
+";
 $result = $conn->query($sql);
-
-// Verificar si la consulta devuelve resultados
-if ($result) {
-    if ($result->num_rows > 0) {
-        // Mostrar los resultados
-        while ($row = $result->fetch_assoc()) {
-            echo "<p><strong>Usuario:</strong> " . $row['nombre_usuario'] . "<br>";
-            echo "<strong>Equipo:</strong> " . $row['nombre_equipo'] . "<br>";
-            echo "<strong>Categoría:</strong> " . $row['nombre_categoria'] . "<br>";
-            echo "<strong>Calificación:</strong> " . $row['calificacion'] . "<br>";
-            echo "<strong>Retroalimentación:</strong> " . $row['retroalimentacion'] . "<br>";
-            echo "<hr></p>";
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Actividad de Usuarios</title>
+    <style>
+        body {
+            margin-top: 60px;
         }
-    } else {
-        echo "No hay actividad registrada.";
-    }
-} else {
-    // Si la consulta falla
-    echo "Error al recuperar los datos: " . $conn->error;
-}
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .content {
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-light bg-warning px-3">
+        <a class="btn btn-dark me-3" href="ver_actividad.php">Ver Actividad de Usuarios</a>
+        <a class="btn btn-dark me-3" href="ranking_por_categorias.php">Ver Rankings</a>
+        <a class="btn btn-dark me-3" href="dashboard.php">Volver al Dashboard</a>
+        <a class="btn btn-dark" href="login.html">Cerrar Sesión</a>
+    </nav>
 
+    <!-- Contenido dinámico -->
+    <div class="container content">
+        <h1>Actividad de Usuarios</h1>
+        <hr>
+        <?php if ($result && $result->num_rows > 0): ?>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Equipo</th>
+                        <th>Categoría</th>
+                        <th>Calificación</th>
+                        <th>Retroalimentación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['nombre_usuario']); ?></td>
+                            <td><?php echo htmlspecialchars($row['nombre_equipo']); ?></td>
+                            <td><?php echo htmlspecialchars($row['nombre_categoria']); ?></td>
+                            <td><?php echo htmlspecialchars($row['calificacion']); ?></td>
+                            <td><?php echo htmlspecialchars($row['retroalimentacion']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No hay actividad registrada.</p>
+        <?php endif; ?>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<?php
+// Cerrar conexión
 $conn->close();
 ?>

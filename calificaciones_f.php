@@ -61,16 +61,41 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Olimpiadas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="categorias.php">Categorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h1>Mis Calificaciones</h1>
         <br>
+
+        <!-- Equipos Calificados -->
         <div class="mb-4">
             <h3>Calificaciones dadas</h3>
             <br>
             <?php if ($result_calificaciones->num_rows > 0) : ?>
                 <table class="table table-bordered">
                     <thead>
-                        <tr style="background-color: rgb(260, 183, 27)">
+                        <tr class="table-warning">
                             <th>Equipo</th>
                             <th>Categoría</th>
                             <th>Calificación</th>
@@ -79,7 +104,7 @@ $conn->close();
                     </thead>
                     <tbody>
                         <?php while ($calificacion = $result_calificaciones->fetch_assoc()) : ?>
-                            <tr style="background-color: rgb(260, 283, 27)">
+                            <tr>
                                 <td><?php echo htmlspecialchars($calificacion['nombre_equipo']); ?></td>
                                 <td><?php echo htmlspecialchars($calificacion['nombre_categoria']); ?></td>
                                 <td><?php echo number_format($calificacion['calificacion'], 2); ?> %</td>
@@ -92,44 +117,7 @@ $conn->close();
                 <p>No has calificado ningún equipo aún.</p>
             <?php endif; ?>
         </div>
-
-        <div class="mb-4">
-            <h2>Equipos sin calificación</h2>
-            <?php if ($result_no_calificados->num_rows > 0) : ?>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr style="background-color: rgb(88, 174, 249)">
-                            <th>Equipo</th>
-                            <th>Categoría</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($equipo = $result_no_calificados->fetch_assoc()) : ?>
-                            <tr style="background-color: rgb(179, 206, 246)">
-                                <td ><?php echo htmlspecialchars($equipo['nombre_equipo']); ?></td>
-                                <td ><?php echo htmlspecialchars($equipo['nombre_categoria']); ?></td>
-                                <td>
-                                    <a href="calificar.php?equipo_id=<?php echo $equipo['id']; ?>" class="btn btn-primary">Calificar</a>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            <?php else : ?>
-                <p>Has calificado todos los equipos.</p>
-            <?php endif; ?>
-        </div>
-
-        <div class="d-flex justify-content-between">
-           <button style=" position:absolute;  margin: 10px; right:20px; border-radius:20px; background-color: rgb(246, 133, 27); text-aling=center; height:15%; width:22%; "> 
-            <a style=" font-size:20px; color:white;" href="categorias.php"> Seleccionar otra categoria</a> </button>
-                <br>
-           <!--<a href="equipos.php?categoria_id=<?php echo $_GET['categoria_id']; ?>" class="btn btn-secondary">Elegir otra categoría</a>
-            <a href="calificar.php?equipo_id=<?php echo $equipo['equipo_id']; ?>" class="btn btn-success">Calificar otro equipo</a>
-            -->
-        </div>
-    </div> 
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
