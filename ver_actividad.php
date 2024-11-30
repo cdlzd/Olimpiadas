@@ -20,9 +20,27 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Verificar si se envió una solicitud para eliminar
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['eliminar'])) {
+    $id_calificacion = intval($_POST['calificacion_id']); // Validar el ID
+
+    // Eliminar la calificación
+    $delete_sql = "DELETE FROM calificaciones WHERE id = ?";
+    $stmt = $conn->prepare($delete_sql);
+    $stmt->bind_param("i", $id_calificacion);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Actividad eliminada exitosamente');</script>";
+    } else {
+        echo "<script>alert('Error al eliminar la actividad');</script>";
+    }
+
+    $stmt->close();
+}
+
 // Consultar las calificaciones de los usuarios
 $sql = "
-    SELECT calificaciones.*, usuarios.nombre_usuario, equipos.nombre_equipo, categoria.nombre_categoria 
+    SELECT calificaciones.id AS calificacion_id, calificaciones.*, usuarios.nombre_usuario, equipos.nombre_equipo, categoria.nombre_categoria 
     FROM calificaciones
     JOIN usuarios ON calificaciones.usuario_id = usuarios.id
     JOIN equipos ON calificaciones.equipo_id = equipos.id
@@ -74,6 +92,7 @@ $result = $conn->query($sql);
                         <th>Categoría</th>
                         <th>Calificación</th>
                         <th>Retroalimentación</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,6 +103,12 @@ $result = $conn->query($sql);
                             <td><?php echo htmlspecialchars($row['nombre_categoria']); ?></td>
                             <td><?php echo htmlspecialchars($row['calificacion']); ?></td>
                             <td><?php echo htmlspecialchars($row['retroalimentacion']); ?></td>
+                            <td>
+                                <form method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
+                                    <input type="hidden" name="calificacion_id" value="<?php echo $row['calificacion_id']; ?>">
+                                    <button type="submit" name="eliminar" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
