@@ -6,8 +6,9 @@ $servername = "sql107.infinityfree.com"; // Cambiar si es necesario
 $username = "if0_37819215"; // Cambiar por tu usuario
 $password = "F7xg1rN0xR"; // Cambiar por tu contraseña
 $dbname = "if0_37819215_XXX"; // Nombre de la base de datos
+$port = "3306"
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 // Verificar si la conexión fue exitosa
 if ($conn->connect_error) {
